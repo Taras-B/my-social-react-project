@@ -2,6 +2,7 @@
   "name": "my-social",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://taras-b.github.io/my-social-react-project",
   "dependencies": {
     "axios": "^0.19.1",
     "react": "^16.12.0",
