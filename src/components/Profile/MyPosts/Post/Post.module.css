@@ -1,0 +1,10 @@
+.item {
+    margin: 15px;
+}
+
+.item img {
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+    border-radius: 50%;
+}

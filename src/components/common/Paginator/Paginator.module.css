@@ -1,0 +1,5 @@
+.selectedPage {
+    margin: 0 4px;
+    font-weight: bold;
+    cursor: pointer;
+}

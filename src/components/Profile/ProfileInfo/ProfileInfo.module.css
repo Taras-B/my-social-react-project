@@ -1,0 +1,15 @@
+.profileInfo {
+
+}
+
+.profileInfo img {
+    padding: 0;
+    width: 100%;   
+}
+
+.profileInfo h2 {
+    padding: 0 10px;
+}
+.imgWidth {
+    width: 200px;
+}
