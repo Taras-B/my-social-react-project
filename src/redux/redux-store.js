@@ -23,7 +23,6 @@ const store = createStore(reducers, composeEnhancers(
   ));
 
 
-// let store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
 window.store = store // можна дивится який сторе в консолі хрома
 

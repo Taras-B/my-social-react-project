@@ -4,26 +4,12 @@ import Post from './Post/Post';
 import { reduxForm, Field } from 'redux-form';
 import { required, maxLengthCreator } from '../../../utils/validators/validators';
 import { Textarea } from '../../common/FormsControls/FormsControls';
-// let addPostActionCreator = () => {
-//     return { type: 'ADD-POST'}
-// }
-
-// let updateNewPostTextActionCreator = (text) => {
-//     return {type: 'UPDATE-NEW-POST-TEXT', newText: text}
-// }
 
 const MyPosts = React.memo((props) => {
-    // let newPostElement = React.createRef();   
 
     let onAddPost = (value) => {
         props.addPost(value.newPostText);
     };
-
-    // let onPostChange = () => {
-    //     let text = newPostElement.current.value;
-    //     props.updateNewPostText(text);
-
-    // };
 
     let postElements = props.posts.map(p => <Post key={p.id} message={p.message} like={p.likeCount} />);
 

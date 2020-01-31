@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import style from './Paginator.module.css'
-// import userPhoto from '../../assets/ava-img.jpg'
-// import { NavLink } from 'react-router-dom';
-// import * as axios from 'axios';
-// import { userAPI } from '../../api/api';
+
 
 const Paginator = ({currentPage, totalItemsCount, pageSize, onPageChanged, portionSize = 10, ...props}) => {
     let pagesCount = Math.ceil(totalItemsCount / pageSize);
@@ -22,22 +19,7 @@ const Paginator = ({currentPage, totalItemsCount, pageSize, onPageChanged, porti
     useEffect(() => {
         onPageChanged(leftPortionPageNumber)
     }, [leftPortionPageNumber, onPageChanged]); 
-    
-    
-//     let nextButtonClick = () => { let LNumber = leftPortionPageNumber
-//         setPortionNumber(portionNumber + 1)
-//         onPageChanged(LNumber)
-// }
-// const memoizedCallback = useCallback(() => {
-//    return onPageChanged(leftPortionPageNumber)
-    
-//   }, [leftPortionPageNumber, onPageChanged]);
-
-//     useEffect(() => {
-//         // onPageChanged(leftPortionPageNumber)
-//         memoizedCallback()
-//     }, [memoizedCallback]);  
-    
+        
     return ( 
         <div>
             {portionNumber > 1 && <button onClick={() => {setPortionNumber(portionNumber - 1)}}>Prev</button>}

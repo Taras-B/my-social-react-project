@@ -3,9 +3,6 @@ import React from 'react'
 import style from './users.module.css'
 import userPhoto from '../../assets/ava-img.jpg'
 import { NavLink } from 'react-router-dom';
-// import Paginator from '../common/Paginator/Paginator';
-// import * as axios from 'axios';
-// import { userAPI } from '../../api/api';
 
 const User = ({ user, followingInProgress, unfollow, follow }) => {
     return (

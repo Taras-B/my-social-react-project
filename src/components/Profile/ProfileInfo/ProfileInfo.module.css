@@ -1,5 +1,5 @@
 .profileInfo {
-
+ 
 }
 
 .profileInfo img {
@@ -11,5 +11,13 @@
     padding: 0 10px;
 }
 .imgWidth {
-    width: 200px;
+    max-width: 200px;
+}
+.contact {
+    margin-left: 20px;
+}
+
+.formSummaryError{
+    padding: 10px;
+    border: brown 2px solid;
 }

@@ -1,32 +1,26 @@
 import React from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, HashRouter } from 'react-router-dom';
 
 import './App.css';
 
-// import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
-// import Profile from './components/Profile/Profile';
-// import Dialogs from './components/Dialogs/Dialogs';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 
-// import DialogsContainer from './components/Dialogs/DialogsContainer';
-// import Users from './components/Users/Users';
-import UsersContainer from './components/Users/UsersContainer';
-// import ProfileContainer from './components/Profile/ProfileContainer';
-import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
+import Preloader from './components/common/preloader/Preloader';
+
+import UsersContainer from './components/Users/UsersContainer';
+import HeaderContainer from './components/Header/HeaderContainer';
 
 
 
 import { initializeApp } from './redux/app-reducer';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import  {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
+import { compose } from 'redux';
 import store from './redux/redux-store';
 
-import Preloader from './components/common/preloader/Preloader';
 import { withSuspense } from './components/hoc/withSuspense';
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -54,23 +48,21 @@ class App extends React.Component {
     )
   }
 }
-// state={state} dispatch={store.dispatch.bind(store)} store={store}
-// store={props.store}
-// store={props.store} 
+
 const mapStateToProps = (state) => ({
   initialized: state.app.initialized
 })
-// export default App;
+
 let AppContainer = compose(
   withRouter,
   connect(mapStateToProps, {initializeApp})) (App)
 
 const MainApp = (props) => {
-  return <BrowserRouter basename={process.env.PUBLIC_URL}>
+  return <HashRouter basename={process.env.PUBLIC_URL}>
           <Provider store={store}>
             <AppContainer />
           </Provider>
-        </BrowserRouter>
+        </HashRouter>
 
 }
 

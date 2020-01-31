@@ -8,23 +8,15 @@ import { Redirect } from 'react-router-dom'
 
 import style from './../common/FormsControls/FormContol.module.css'
 
-const LoginForm = ({handleSubmit, error}) => {
+const LoginForm = ({handleSubmit, error, captchaUrl}) => {
     return (
         <form onSubmit={handleSubmit}>
-                {createField("Email", "email", [required], Input)}
-                {createField("Pasword", "password", [required], Input)}
-                {createField(null, "rememberMe", [], Input, {type: "checkbox"}, "remember me")}
+            {createField("Email", "email", [required], Input)}
+            {createField("Pasword", "password", [required], Input)}
+            {createField(null, "rememberMe", [], Input, { type: "checkbox" }, "remember me")}
+            {captchaUrl && <img src={captchaUrl} alt="captcha" />}
+            {captchaUrl && createField("Symbols from image", "captcha", [required], Input)}
 
-            {/* <div>
-                <Field placeholder={"Email"} validate={[required]} name={'email'} component={Input} />
-            </div>
-            <div>
-
-                 <Field placeholder={"Pasword"} validate={[required]} name={'password'} component={Input} /> 
-            </div>
-            <div>
-                <Field type={"checkbox"} validate={[required]} name={'rememberMe'} component={Input} /> remember me
-            </div> */}
             {error && <div className={style.formSummaryError}>
                 {error}
             </div>}
@@ -39,7 +31,7 @@ const LoginReduxForm = reduxForm({
 
 const Login = (props) => {
     const onSubmit = (formData) => {
-        props.login(formData.email, formData.password, formData.rememberMe)
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha)
         console.log(formData)
     }
 
@@ -48,12 +40,13 @@ const Login = (props) => {
     return (
         <div>
             <h1>Login</h1>
-            <LoginReduxForm onSubmit={onSubmit} />
+            <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl} />
         </div>
     )
 }
 
 const mapStateToProps = (state) => ({
+    captchaUrl: state.auth.captchaUrl,
     isAuth: state.auth.isAuth
 })
 

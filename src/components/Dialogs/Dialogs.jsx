@@ -13,14 +13,11 @@ const Dialogs = (props) => {
     let dialogsElements = state.dialogs.map(dialog => <DialogItem name={dialog.name} key={dialog.id} id={dialog.id} />);
 
     let messageElements = state.messages.map(m => <Message message={m.message} key={m.id} />);
-    // let newMessageBody = state.newMessageBody;
 
     let AddNewMessage =(value) => {
         console.log('object', value)
         props.sendMessage(value.newMessageBody)
     }
-
-    // if(!props.isAuth) return <Redirect to={"/login"} />
 
     return (
         <div className={s.dialogs}>
@@ -46,9 +43,6 @@ const AddMessageForm = (props) => {
                 validate={[required, maxLength50]} 
                 name="newMessageBody" 
                 placeholder="Message you" />
-            {/* <div><textarea value={newMessageBody} 
-                                    onChange={onNewMessageChange}
-                                    placeholder='Enter your massege'></textarea></div> */}
              <div><button>SEND</button></div>
         </form>
     )
