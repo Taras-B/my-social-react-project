@@ -1,6 +1,6 @@
 .nav {
-    grid-area: n;
-    background-color: blueviolet;
+    height: 100%;
+    background-color: var(--secondary);
     padding: 10px;
 }
 .item {
@@ -8,10 +8,14 @@
 
 }
 .item a{
-    color: aliceblue;
+    color: var(--text);
     text-decoration: none;
+    transition: all .5s ease;
 }
 
 .item a.active {
-    color: burlywood;
+    border-radius: 15px;
+    padding: 5px 10px;
+    background: #fff;
+    color: black;
 }

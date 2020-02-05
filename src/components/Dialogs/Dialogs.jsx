@@ -5,6 +5,7 @@ import Message from './Message/Message';
 import { Field, reduxForm } from 'redux-form'; 
 import { Textarea } from '../common/FormsControls/FormsControls';
 import { required, maxLengthCreator } from '../../utils/validators/validators';
+import { Grid, Box, Button } from '@material-ui/core';
 
 
 const Dialogs = (props) => {
@@ -20,17 +21,17 @@ const Dialogs = (props) => {
     }
 
     return (
-        <div className={s.dialogs}>
-            <div className={s.dialogsItems}>
+        <Grid container spacing={1} className={s.dialogs}>
+            <Grid item xs={12} sm={3} >
                 {dialogsElements}
-            </div>
-            <div className={s.messages}>
-                <div>{messageElements}</div>
-                <div>
+            </Grid>
+            <Grid container item xs={12} sm={9} justify="center" direction='column' className={s.messageForm} >
+                <Box>{messageElements}</Box>
+                <Box>
                     <AddMessageFormRedux onSubmit={AddNewMessage} />
-                </div>
-            </div>
-        </div>
+                </Box>
+            </Grid>
+        </Grid>
     )
 }
 
@@ -42,8 +43,11 @@ const AddMessageForm = (props) => {
             <Field component={Textarea}
                 validate={[required, maxLength50]} 
                 name="newMessageBody" 
-                placeholder="Message you" />
-             <div><button>SEND</button></div>
+                placeholder="Message you"
+                multiline
+                variant="outlined"
+                 />
+             <div><Button variant="outlined" color="primary" type='submit'>Send</Button></div>
         </form>
     )
 }

@@ -1,3 +1,10 @@
+:root {
+  --main-color: #FFD0AA;
+  --main-c: #BA5A31;
+  --secondary: #D3967B;
+  --text:#828282;
+}
+
 body {
   margin: 0;
   padding: 0;

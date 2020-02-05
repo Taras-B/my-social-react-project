@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './FormContol.module.css'
 import { Field } from 'redux-form'
+import { TextField } from '@material-ui/core'
 
 
 const FormControl = ({input, meta: {touched, error}, children}) => {
@@ -10,7 +11,7 @@ const FormControl = ({input, meta: {touched, error}, children}) => {
             <div>
                 {children}
             </div>
-            {hasError && <span>{error}</span> }
+            {hasError && <span className={styles.error}>{error}</span> }
 
         </div>
     )
@@ -21,7 +22,7 @@ export const Input = (props) => {
 }
 export const Textarea = (props) => {
     const {input, meta, child, ...restProps} = props
-    return <FormControl {...props}> <textarea {...input} {...restProps} /> </FormControl>
+    return <FormControl {...props}> <TextField {...input} {...restProps} /> </FormControl>
 }
 
 export const createField = ( placeholder, name, validators, component, props = {}, text = "") => (
