@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './FormContol.module.css'
 import { Field } from 'redux-form'
-import { TextField } from '@material-ui/core'
+import { TextField, Checkbox } from '@material-ui/core'
 
 
 const FormControl = ({input, meta: {touched, error}, children}) => {
@@ -17,8 +17,9 @@ const FormControl = ({input, meta: {touched, error}, children}) => {
     )
 }
 export const Input = (props) => {
+    //debugger
     const {input, meta, child, ...restProps} = props
-    return <FormControl {...props}> <input {...input} {...restProps} /> </FormControl>
+    return <FormControl {...props}> {props.type === "checkbox" ? <Checkbox {...input} {...restProps}/> : <TextField {...input} {...restProps} />} </FormControl>
 }
 export const Textarea = (props) => {
     const {input, meta, child, ...restProps} = props
@@ -31,6 +32,6 @@ export const createField = ( placeholder, name, validators, component, props = {
                 name={name}
                 validate={validators} 
                 component={component} 
-                {...props}/>{text} 
+                {...props}/><p>{text}</p> 
     </div>
 )
