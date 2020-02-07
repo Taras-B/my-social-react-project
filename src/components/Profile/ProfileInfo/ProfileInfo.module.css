@@ -1,5 +1,7 @@
 .profileInfo {
- 
+ margin: 20px;
+ /* display: grid;
+ justify-content: center; */
 }
 
 .profileInfo img {

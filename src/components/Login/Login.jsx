@@ -41,20 +41,20 @@ const Login = (props) => {
     return (
         <div style={{textAlign: 'center'}}> 
             <Grid container spacing={4} >
-                <Grid item xs='12' >
+                <Grid item xs="12" >
                     <Typography variant="h5">Login</Typography>
                     <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl} />
                 </Grid>
                 <Grid item xs>
-                    <Typography variant='h6'>
+                    <Typography variant="h6">
                         Дані щоб зайти в тестовий аккаунт:
                     </Typography>
-                    <Typography variant='h6'>
+                    <Typography variant="h6">
                         Email: <Typography variant='subtitle1' display='inline'>
                             free@samuraijs.com
                         </Typography>
                     </Typography>
-                    <Typography variant='h6'>
+                    <Typography variant="h6">
                         Password: <Typography variant='subtitle1' display='inline'>free</Typography>
                     </Typography>
                 </Grid>

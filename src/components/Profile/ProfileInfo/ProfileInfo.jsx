@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 
 import s from './ProfileInfo.module.css';
 
-import Preloader from '../../common/preloader/Preloader'
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import userPhoto from '../../../assets/ava-img.jpg'
 import ProfileDataFormRedux from './ProfileDataForm';
+import { Grid, Typography, Button } from '@material-ui/core';
 
 
 const ProfileInfo = ({profile, savePhoto, isOwner, status, updateStatus, saveProfile }) => {
     let [editMode, setEditMode] = useState(false)
-    if(!profile) {
-        return <Preloader />
-    } 
 
     const onPhotoSelected = (e) => {
         if (e.target.files.length) {
@@ -32,25 +29,37 @@ const ProfileInfo = ({profile, savePhoto, isOwner, status, updateStatus, savePro
             {/* <div>
                 <img src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="NBature"/>
             </div> */}
-            <div>
-                <div className={s.imgWidth}><img src={profile.photos.large || userPhoto} alt="vxc" />
-                    {isOwner && <input type={"file"} onChange={onPhotoSelected} />}
-                </div>
-                {editMode ? <ProfileDataFormRedux initialValues={profile} profile={profile} onSubmit={onSubmit} />
-                          : <ProfileData profile={profile} 
-                                        isOwner={isOwner}
-                                        goToEditMode={() => setEditMode(true)} />}
-                <h2>ava + description</h2>
-                <ProfileStatusWithHooks status={status }
-                    updateStatus={updateStatus} />
-            </div>
+            <Grid container>
+                <Grid container >
+                    <Grid item xs={12} sm={6}>
+                        <div className={s.imgWidth}><img src={profile.photos.large || userPhoto} alt="vxc" />
+                            {isOwner && <Button
+                                variant="contained"
+                                component="label"
+                                size="small"
+                            >Upload File <input type={"file"} style={{ display: 'none' }} onChange={onPhotoSelected} /></Button>}
+                        </div>
+                    </Grid>
+                    <Grid item xs={12} sm={6} >
+                        {editMode ? <ProfileDataFormRedux initialValues={profile} profile={profile} onSubmit={onSubmit} />
+                            : <ProfileData profile={profile}
+                                isOwner={isOwner}
+                                goToEditMode={() => setEditMode(true)} />}
+                    </Grid>
+                </Grid>
+                    <Grid>
+                        <Typography variant="subtitle1">Status:</Typography>
+                        <ProfileStatusWithHooks status={status }
+                            updateStatus={updateStatus} />
+                    </Grid>
+            </Grid>
         </div>
     )
 }
 
 const ProfileData = ({ profile, isOwner, goToEditMode }) => {
     return <div>
-        {isOwner && <div><button onClick={goToEditMode}>Edit</button></div>}
+        {isOwner && <div><Button variant="contained" size='small' onClick={goToEditMode}>Edit</Button></div>}
         <div>
             <b>My name: </b> {profile.fullName}
         </div>

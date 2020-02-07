@@ -1,5 +1,17 @@
 .item {
-    margin: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.title p {
+    margin: 10px;
+    margin-left: 20px;
+    
 }
 
 .item img {

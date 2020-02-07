@@ -2,7 +2,7 @@ import React from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
-import { Field, reduxForm } from 'redux-form'; 
+import { Field, reduxForm, reset } from 'redux-form'; 
 import { Textarea } from '../common/FormsControls/FormsControls';
 import { required, maxLengthCreator } from '../../utils/validators/validators';
 import { Grid, Box, Button } from '@material-ui/core';
@@ -16,7 +16,6 @@ const Dialogs = (props) => {
     let messageElements = state.messages.map(m => <Message message={m.message} key={m.id} />);
 
     let AddNewMessage =(value) => {
-        console.log('object', value)
         props.sendMessage(value.newMessageBody)
     }
 
@@ -51,7 +50,8 @@ const AddMessageForm = (props) => {
         </form>
     )
 }
-
-const AddMessageFormRedux = reduxForm({form: "dialogAddMessageForm"})(AddMessageForm)
+const afterSubmit = (result, dispatch) =>
+    dispatch(reset('dialogAddMessageForm'))
+const AddMessageFormRedux = reduxForm({form: "dialogAddMessageForm", onSubmitSuccess: afterSubmit})(AddMessageForm)
 
 export default Dialogs;

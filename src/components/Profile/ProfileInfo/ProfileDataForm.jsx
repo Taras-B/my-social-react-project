@@ -3,13 +3,16 @@ import { createField, Input, Textarea } from '../../common/FormsControls/FormsCo
 import { reduxForm } from 'redux-form';
 
 import style from './ProfileInfo.module.css';
+import { Button } from '@material-ui/core';
 
 
 
 const ProfileDataForm = ({ handleSubmit, profile, error }) => {
 
     return <form onSubmit={handleSubmit}>
-        <div><button>Save</button></div>
+        <div><Button variant="contained"
+            size="small"
+            type='submit'>Save</Button></div>
         {error && <div className={style.formSummaryError}>{error}</div>}
         <div>
             <b>My name: </b> {createField("Full name", "fullName", [], Input)}
