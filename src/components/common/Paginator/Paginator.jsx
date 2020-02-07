@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 
 import style from './Paginator.module.css'
 
+import {Button} from '@material-ui/core'
+
 
 const Paginator = ({currentPage, totalItemsCount, pageSize, onPageChanged, portionSize = 10, ...props}) => {
     let pagesCount = Math.ceil(totalItemsCount / pageSize);
@@ -21,17 +23,17 @@ const Paginator = ({currentPage, totalItemsCount, pageSize, onPageChanged, porti
     }, [leftPortionPageNumber, onPageChanged]); 
         
     return ( 
-        <div>
-            {portionNumber > 1 && <button onClick={() => {setPortionNumber(portionNumber - 1)}}>Prev</button>}
+        <div className={style.paginator}>
+            {portionNumber > 1 && <Button variant="contained" size="small" onClick={() => {setPortionNumber(portionNumber - 1)}}>Prev</Button>}
             {pages.filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
                     .map(p => {
                         return <span key={p}
-                        className={currentPage === p ? style.selectedPage : ""}
+                        className={currentPage === p ? style.selectedPage : "" + style.numbers}
                             onClick={() => {onPageChanged(p) }}>{p}</span>
             })}
 
-            {portionCount > portionNumber && <button onClick={() => setPortionNumber(portionNumber + 1)}
-                        >Next</button>}
+            {portionCount > portionNumber && <Button variant="contained" size="small" onClick={() => setPortionNumber(portionNumber + 1)}
+                        >Next</Button>}
              
         </div>
 

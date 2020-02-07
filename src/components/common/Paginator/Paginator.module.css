@@ -2,4 +2,11 @@
     margin: 0 4px;
     font-weight: bold;
     cursor: pointer;
+    background: var(--secondary);
+    border-radius: 50%;
+    padding: 1px 6px;
+}
+.numbers {
+    margin: 0 7px;
+    cursor: pointer;
 }

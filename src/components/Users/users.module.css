@@ -1,6 +1,46 @@
-.usersPhoto {
+
+.userPage {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-self: center;
+}
+
+.paginator {
+    align-self: center;
+}
+.userItem {
+    margin: 20px;
+    max-width: 370px;
+}
+.cardItems{
+    background: var(--secondary) !important; 
+    max-width: 500px;
+
+}
+.cardHeader {
+    flex-direction: column;
+}
+
+.details {
+    display: flex;
+    flex-direction: row;
+}
+
+.users {
+    align-self: center;
+    text-align: center;
+    margin: 20px;
+}
+
+/* .usersPhoto {
     width: 100px;
     height: 100px;
+} */
+.navLink{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
 }
 .selectedPage {
     font-weight: bold;

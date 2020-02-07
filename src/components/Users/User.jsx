@@ -3,34 +3,44 @@ import React from 'react'
 import style from './users.module.css'
 import userPhoto from '../../assets/ava-img.jpg'
 import { NavLink } from 'react-router-dom';
+import { Grid, CardMedia, CardContent, Button, CardActions, Typography, Card } from '@material-ui/core';
 
 const User = ({ user, followingInProgress, unfollow, follow }) => {
     return (
-        <div>
-            <span>
-                <div>
-                    <NavLink to={'/profile/' + user.id}><img src={user.photos.small != null ? user.photos.small : userPhoto} alt="photoj" className={style.usersPhoto} /></NavLink></div>
-                <div>
-                    {user.followed
-                        ? <button disabled={followingInProgress.some(id => id === user.id)}
-                            onClick={() => { unfollow(user.id) }}>Unfollow</button>
-                        : < button disabled={followingInProgress.some(id => id === user.id)}
-                            onClick={() => {
-                                follow(user.id)
-                            }} >Follow</button>}
-                </div>
-            </span>
-            <span>
-                <span>
-                    <div>{user.name}</div>
-                    <div>{user.status}</div>
-                </span>
-                <div>{"user.location.city"}</div>
-                <div>{"user.location.country"}</div>
-                <span>
+        <div className={style.userItem}>
+            <Card className={style.cardItems}>
+                <div className={style.details}>
+                    <CardActions className={style.cardHeader}>
+                        <CardMedia component="img"
+                            alt="Contemplative Reptile"
+                            height="140"
+                            src={`${user.photos.small != null ? user.photos.small : userPhoto}`}
+                            title="Contemplative Reptile" />
 
-                </span>
-            </span>
+                        <CardContent style={{ paddingBottom: 0 }}>
+                            {user.followed
+                                ? <Button disabled={followingInProgress.some(id => id === user.id)}
+                                    onClick={() => { unfollow(user.id) }}>Unfollow</Button>
+                                : < Button disabled={followingInProgress.some(id => id === user.id)}
+                                    onClick={() => {
+                                        follow(user.id)
+                                    }} >Follow</Button>}
+                        </CardContent>
+                    </CardActions>
+
+                    <CardContent>
+                        <Grid item>
+                            <NavLink to={'/profile/' + user.id} className={style.navLink}><Typography variant="subtitle1">{user.name}</Typography></NavLink>
+                            {user.status && <Typography variant="body1">Status: {user.status}</Typography>}
+                        </Grid>
+                        <div>{"user.location.city"}</div>
+                        <div>{"user.location.country"}</div>
+                        <span>
+
+                        </span>
+                    </CardContent>
+                </div>
+            </Card>
 
         </div>
     )
