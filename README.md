@@ -6,8 +6,7 @@ This project was bootstrapped with Create React App.
 GitHub pages: https://taras-b.github.io/my-social-react-project/
 
 How to login
-Just click on Enter as a guest button, or use this email and password:
-
+Use this email and password:
 
     Email: free@samuraijs.com
 
