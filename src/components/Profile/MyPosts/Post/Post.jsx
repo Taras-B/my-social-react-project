@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Post.module.css';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 
 const Post = (props) => {
     return (
@@ -11,7 +11,10 @@ const Post = (props) => {
                     {props.message}
                 </Typography>
             </div>
-            <div><span>Like: </span>{props.like}</div>
+            <div>
+                <Typography variant="subtitle1" display="inline" className={s.like}>Like: {props.like}</Typography>
+                <Button variant="outlined" size="small" onClick={() => props.deletePost(props.id)} >Delete post</Button>
+            </div>
             
         </div>
     )
