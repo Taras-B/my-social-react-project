@@ -1,3 +1,77 @@
+Social network
+Back-end by Samurai-JS server API: https://social-network.samuraijs.com/
+
+This project was bootstrapped with Create React App.
+
+GitHub pages: https://taras-b.github.io/my-social-react-project/
+
+How to login
+Use this email and password:
+
+    Email: free@samuraijs.com
+
+
+    Password: free
+
+By the way, you can login in special account.
+
+Features
+    With server API:
+
+        Authentication
+
+        Follow / Unfollow other users
+
+        Viewing pages of other users (just click on the name user to go to another profile)
+
+        Routing
+
+        Edit profile
+
+        Edit status
+
+        User lists
+
+        Pagination
+
+        Validation
+
+        Anti-bot captcha
+
+    Offline:
+
+        Create posts
+        Delete posts
+        
+Used technologies
+
+  JavaScript and AJAX:
+  
+        CRA
+        
+        React
+        
+        React-router-dom
+        
+        React-redux
+        
+        Redux
+        
+        Redux-form
+        
+        Redux-thunk
+        
+        Reselect
+        
+        Axios
+        
+  CSS and UI design:
+  
+        Material UI
+        
+        Module CSS
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
