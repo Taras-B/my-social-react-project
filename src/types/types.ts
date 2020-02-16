@@ -38,3 +38,15 @@ export type UserType = {
   photos: ProfilePhoto
   followed: boolean
 }
+
+//==== Message
+
+export type DialogType = {
+  id: number
+  name: string
+}
+
+export type MessageType = {
+  id: number
+  message: string
+}
