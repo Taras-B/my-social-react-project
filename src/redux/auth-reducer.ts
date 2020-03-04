@@ -1,3 +1,4 @@
+import { ResultCodeEnum } from './../api/api'
 import { authAPI, securityAPI } from '../api/api'
 import { stopSubmit } from 'redux-form'
 
@@ -66,9 +67,9 @@ export const getCaptchaUrlSuccess = (captchaUrl: string): GetCaptchaUrlSuccessAc
 })
 
 export const getAuthUserData = () => async (dispatch: any) => {
-  let response = await authAPI.getMe()
-  if (response.data.resultCode === 0) {
-    let { id, login, email } = response.data.data
+  let meData = await authAPI.getMe()
+  if (meData.resultCode === ResultCodeEnum.Success) {
+    let { id, login, email } = meData.data
     dispatch(setAuthUserData(id, email, login, true))
   }
 }
@@ -79,14 +80,14 @@ export const login = (
   rememberMe: boolean,
   captcha: string
 ) => async (dispatch: any) => {
-  let response = await authAPI.login(email, password, rememberMe, captcha)
-  if (response.data.resultCode === 0) {
+  let data = await authAPI.login(email, password, rememberMe, captcha)
+  if (data.resultCode === ResultCodeEnum.Success) {
     dispatch(getAuthUserData())
   } else {
-    if (response.data.resultCode === 10) {
+    if (data.resultCode === ResultCodeEnum.CaptchaIsRequier) {
       dispatch(getCapthcaUrl())
     }
-    let message = response.data.resultCode > 0 ? response.data.messages[0] : 'SomeMessages'
+    let message = data.resultCode > 0 ? data.messages[0] : 'SomeMessages'
     dispatch(stopSubmit('login', { _error: message }))
   }
 }
