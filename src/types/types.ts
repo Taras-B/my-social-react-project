@@ -1,3 +1,7 @@
+import { Action } from 'redux'
+import { ThunkAction } from 'redux-thunk'
+import { AppStateType } from '../redux/redux-store'
+
 export type PostType = {
   id: number
   message: string
@@ -50,3 +54,11 @@ export type MessageType = {
   id: number
   message: string
 }
+
+export type MyCastomThunk<ActionType extends Action> = ThunkAction<
+  // Promise<void>,
+  void,
+  AppStateType,
+  any,
+  ActionType
+>

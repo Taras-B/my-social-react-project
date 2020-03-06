@@ -166,8 +166,11 @@ export const toggleFollowProgress = (
   }
 }
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionType>
+
+// Thunk....
+
 export const getUsers = (currentPage: number, pageSize: number): ThunkType => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(toggleIsFetching(true))
     dispatch(setCurrentPage(currentPage))
 

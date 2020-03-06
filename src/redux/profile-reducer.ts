@@ -1,6 +1,6 @@
 import { userAPI, profileAPI } from '../api/api'
 import { stopSubmit } from 'redux-form'
-import { PostType, ProfileType, ProfilePhoto } from '../types/types'
+import { PostType, ProfileType, ProfilePhoto, MyCastomThunk } from '../types/types'
 
 const ADD_POST = 'ADD-POST'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
@@ -20,7 +20,7 @@ let initialState = {
 
 type InitialStateProfileType = typeof initialState
 
-const profileReducer = (state = initialState, action: any): InitialStateProfileType => {
+const profileReducer = (state = initialState, action: ActionType): InitialStateProfileType => {
   switch (action.type) {
     case ADD_POST: {
       let newPost = {
@@ -34,7 +34,7 @@ const profileReducer = (state = initialState, action: any): InitialStateProfileT
       }
     }
     case DELETE_POST: {
-      return { ...state, posts: state.posts.filter(p => p.id !== action.postId) }
+      return { ...state, posts: state.posts.filter((p) => p.id !== action.postId) }
     }
     case SET_USER_PROFILE: {
       return { ...state, profile: action.profile }
@@ -49,6 +49,13 @@ const profileReducer = (state = initialState, action: any): InitialStateProfileT
       return state
   }
 }
+
+type ActionType =
+  | AddPostActionType
+  | SetUserProfileActionType
+  | AddStatusActionType
+  | DeletePostActionType
+  | SavePhotoActionType
 
 type AddPostActionType = {
   type: typeof ADD_POST
@@ -95,40 +102,44 @@ export const savePhotoSuccess = (photos: ProfilePhoto): SavePhotoActionType => {
   return { type: SAVE_PHOTO_SUCCESS, photos }
 }
 
-export const getUserProfile = (userId: number) => async (dispatch: any) => {
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionType>
+export type ThunkType = MyCastomThunk<ActionType>
+
+export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
   let response = await userAPI.getProfile(userId)
   dispatch(setUserProfile(response.data))
 }
 
-export const getStatus = (userId: number) => async (dispatch: any) => {
+export const getStatus = (userId: number): ThunkType => async (dispatch) => {
   let response = await profileAPI.getStatus(userId)
   dispatch(setStatus(response.data))
 }
-export const updateStatus = (status: string) => async (dispatch: any) => {
+export const updateStatus = (status: string): ThunkType => async (dispatch) => {
   let response = await profileAPI.updateStatus(status)
   if (response.data.resultCode === 0) {
     dispatch(setStatus(status))
   }
 }
 
-export const savePhoto = (file: any) => async (dispatch: any) => {
+export const savePhoto = (file: any): ThunkType => async (dispatch) => {
   let response = await profileAPI.savePhoto(file)
   if (response.data.resultCode === 0) {
     dispatch(savePhotoSuccess(response.data.data.photos))
   }
 }
 
-export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
+export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
   const userId = getState().auth.userId
   let response = await profileAPI.saveProfile(profile)
   if (response.data.resultCode === 0) {
-    dispatch(getUserProfile(userId))
+    dispatch(getUserProfile(userId!))
   } else {
     // dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0]}));
     let wrongNetwork = response.data.messages[0]
       .slice(response.data.messages[0].indexOf('>') + 1, response.data.messages[0].indexOf(')'))
       .toLocaleLowerCase()
     dispatch(
+      //@ts-ignore
       stopSubmit('edit-profile', {
         contacts: { [wrongNetwork]: response.data.messages[0] }
       })

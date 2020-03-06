@@ -1,4 +1,5 @@
 import { getAuthUserData } from './auth-reducer'
+import { MyCastomThunk } from '../types/types'
 
 const INITIALIZADE_SUCCESS = 'INITIALIZADE_SUCCESS'
 
@@ -10,7 +11,7 @@ let initialState: InitialStateType = {
   initialized: false
 }
 
-const appReducer = (state = initialState, action: any): InitialStateType => {
+const appReducer = (state = initialState, action: ActionType): InitialStateType => {
   switch (action.type) {
     case INITIALIZADE_SUCCESS:
       return {
@@ -21,6 +22,7 @@ const appReducer = (state = initialState, action: any): InitialStateType => {
       return state
   }
 }
+type ActionType = InitializedSuccessType
 
 type InitializedSuccessType = {
   type: typeof INITIALIZADE_SUCCESS
@@ -29,8 +31,9 @@ type InitializedSuccessType = {
 export const initializedSuccess = (): InitializedSuccessType => ({
   type: INITIALIZADE_SUCCESS
 })
+export type MyReducerThunk = MyCastomThunk<ActionType>
 
-export const initializeApp = () => (dispatch: any) => {
+export const initializeApp = (): MyReducerThunk => (dispatch) => {
   let promise = dispatch(getAuthUserData())
   Promise.all([promise]).then(() => {
     dispatch(initializedSuccess())

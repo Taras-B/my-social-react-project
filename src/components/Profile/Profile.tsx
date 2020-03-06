@@ -1,9 +1,11 @@
 import React from 'react'
+
 import s from './Profile.module.css'
-// import MyPosts from './MyPosts/MyPosts';
+
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import MyPostsContainer from './MyPosts/MyPostsContainer'
 import Preloader from '../common/preloader/Preloader'
+
 import { ProfileType } from '../../types/types'
 
 type PropsType = {
@@ -29,8 +31,7 @@ const Profile: React.FC<PropsType> = (props) => {
         savePhoto={props.savePhoto}
         saveProfile={props.saveProfile}
       />
-      // @ts-ignore
-      <MyPostsContainer photo={props.profile.photos.small} />
+      <MyPostsContainer />
     </div>
   )
 }

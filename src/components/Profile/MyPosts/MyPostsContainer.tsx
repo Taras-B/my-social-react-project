@@ -1,7 +1,9 @@
 // import React from 'react';
-import { addPost, deletePost } from '../../../redux/profile-reducer'
-import MyPosts from './MyPosts'
 import { connect } from 'react-redux'
+
+import MyPosts from './MyPosts'
+
+import { addPost, deletePost } from '../../../redux/profile-reducer'
 import { AppStateType } from '../../../redux/redux-store'
 
 type MapStatePropsType = {}
@@ -13,8 +15,8 @@ type MapStatePropsType = {}
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
-    posts: state.profilePage.posts
-    // profilePhoto: state.profilePage.profile.photos.small
+    posts: state.profilePage.posts,
+    photo: state.profilePage.profile!.photos.small
   }
 }
 
