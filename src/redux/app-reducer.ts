@@ -29,7 +29,7 @@ export const actions = {
     } as const),
 }
 
-export type MyReducerThunk = MyCastomThunk<ActionsType>
+export type MyReducerThunk = MyCastomThunk<ActionsType, void>
 
 export const initializeApp = (): MyReducerThunk => (dispatch) => {
   let promise = dispatch(getAuthUserData())

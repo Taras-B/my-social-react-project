@@ -1,8 +1,8 @@
-import { UserType } from './../types/types'
+import { UserType, MyCastomThunk } from './../types/types'
 import { userAPI } from '../api/userAPI'
 import { updateObjectInArray } from '../utils/object-helpers'
-import { ThunkAction } from 'redux-thunk'
-import { AppStateType, InferActionsTypes } from './redux-store'
+// import { ThunkAction } from 'redux-thunk'
+import { InferActionsTypes } from './redux-store'
 import { Dispatch } from 'redux'
 
 let initialState = {
@@ -98,7 +98,7 @@ export const actions = {
   },
 }
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionType>
+type ThunkType = MyCastomThunk<ActionType>
 
 // Thunks....
 

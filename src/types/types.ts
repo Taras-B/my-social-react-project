@@ -55,10 +55,10 @@ export type MessageType = {
   message: string
 }
 
-export type MyCastomThunk<ActionType extends Action> = ThunkAction<
-  // Promise<void>,
-  void,
+// Promise<void>,
+export type MyCastomThunk<A extends Action, R = Promise<void>> = ThunkAction<
+  R,
   AppStateType,
-  any,
-  ActionType
+  unknown,
+  A
 >

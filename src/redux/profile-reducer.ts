@@ -2,12 +2,13 @@ import { profileAPI } from '../api/profileAPI'
 // import { userAPI } from '../api/userAPI'
 import { stopSubmit } from 'redux-form'
 import { PostType, ProfileType, ProfilePhoto, MyCastomThunk } from '../types/types'
+import { InferActionsTypes } from './redux-store'
 
-const ADD_POST = 'ADD-POST'
-const SET_USER_PROFILE = 'SET_USER_PROFILE'
-const SET_USER_STATUS = 'SET_USER_STATUS'
-const DELETE_POST = 'DELETE_POST'
-const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS'
+// const ADD_POST = 'SN/PROFILE/ADD-POST'
+// const SET_USER_PROFILE = 'SN/PROFILE/SET_USER_PROFILE'
+// const SET_USER_STATUS = 'SN/PROFILE/SET_USER_STATUS'
+// const DELETE_POST = 'SN/PROFILE/DELETE_POST'
+// const SAVE_PHOTO_SUCCESS = 'SN/PROFILE/SAVE_PHOTO_SUCCESS'
 
 let initialState = {
   posts: [
@@ -21,9 +22,11 @@ let initialState = {
 
 type InitialStateProfileType = typeof initialState
 
-const profileReducer = (state = initialState, action: ActionType): InitialStateProfileType => {
+type ActionsType = InferActionsTypes<typeof actions>
+
+const profileReducer = (state = initialState, action: ActionsType): InitialStateProfileType => {
   switch (action.type) {
-    case ADD_POST: {
+    case 'SN/PROFILE/ADD-POST': {
       let newPost = {
         id: Date.now(),
         message: action.newPostText,
@@ -34,16 +37,16 @@ const profileReducer = (state = initialState, action: ActionType): InitialStateP
         posts: [...state.posts, newPost],
       }
     }
-    case DELETE_POST: {
+    case 'SN/PROFILE/DELETE_POST': {
       return { ...state, posts: state.posts.filter((p) => p.id !== action.postId) }
     }
-    case SET_USER_PROFILE: {
+    case 'SN/PROFILE/SET_USER_PROFILE': {
       return { ...state, profile: action.profile }
     }
-    case SET_USER_STATUS: {
+    case 'SN/PROFILE/SET_USER_STATUS': {
       return { ...state, status: action.status }
     }
-    case SAVE_PHOTO_SUCCESS: {
+    case 'SN/PROFILE/SAVE_PHOTO_SUCCESS': {
       return { ...state, profile: { ...state.profile, photos: action.photos } as ProfileType }
     }
     default:
@@ -51,81 +54,41 @@ const profileReducer = (state = initialState, action: ActionType): InitialStateP
   }
 }
 
-type ActionType =
-  | AddPostActionType
-  | SetUserProfileActionType
-  | AddStatusActionType
-  | DeletePostActionType
-  | SavePhotoActionType
-
-type AddPostActionType = {
-  type: typeof ADD_POST
-  newPostText: string
+export const actions = {
+  addPost: (newPostText: string) => ({ type: 'SN/PROFILE/ADD-POST', newPostText } as const),
+  setUserProfile: (profile: ProfileType) =>
+    ({ type: 'SN/PROFILE/SET_USER_PROFILE', profile } as const),
+  setStatus: (status: string) => ({ type: 'SN/PROFILE/SET_USER_STATUS', status } as const),
+  deletePost: (postId: number) => ({ type: 'SN/PROFILE/DELETE_POST', postId } as const),
+  savePhotoSuccess: (photos: ProfilePhoto) =>
+    ({ type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos } as const),
 }
 
-export const addPost = (newPostText: string): AddPostActionType => {
-  return { type: ADD_POST, newPostText }
-}
-
-type SetUserProfileActionType = {
-  type: typeof SET_USER_PROFILE
-  profile: ProfileType
-}
-
-export const setUserProfile = (profile: ProfileType): SetUserProfileActionType => {
-  return { type: SET_USER_PROFILE, profile }
-}
-
-type AddStatusActionType = {
-  type: typeof SET_USER_STATUS
-  status: string
-}
-
-export const setStatus = (status: string): AddStatusActionType => {
-  return { type: SET_USER_STATUS, status }
-}
-
-type DeletePostActionType = {
-  type: typeof DELETE_POST
-  postId: number
-}
-
-export const deletePost = (postId: number): DeletePostActionType => {
-  return { type: DELETE_POST, postId }
-}
-
-type SavePhotoActionType = {
-  type: typeof SAVE_PHOTO_SUCCESS
-  photos: ProfilePhoto
-}
-
-export const savePhotoSuccess = (photos: ProfilePhoto): SavePhotoActionType => {
-  return { type: SAVE_PHOTO_SUCCESS, photos }
-}
+//   Thunks
 
 // type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionType>
-export type ThunkType = MyCastomThunk<ActionType>
+export type ThunkType = MyCastomThunk<ActionsType>
 
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
   let data = await profileAPI.getProfile(userId)
-  dispatch(setUserProfile(data))
+  dispatch(actions.setUserProfile(data))
 }
 
 export const getStatus = (userId: number): ThunkType => async (dispatch) => {
   let data = await profileAPI.getStatus(userId)
-  dispatch(setStatus(data))
+  dispatch(actions.setStatus(data))
 }
 export const updateStatus = (status: string): ThunkType => async (dispatch) => {
   let data = await profileAPI.updateStatus(status)
   if (data.resultCode === 0) {
-    dispatch(setStatus(status))
+    dispatch(actions.setStatus(status))
   }
 }
 
-export const savePhoto = (file: any): ThunkType => async (dispatch) => {
+export const savePhoto = (file: File): ThunkType => async (dispatch) => {
   let data = await profileAPI.savePhoto(file)
   if (data.resultCode === 0) {
-    dispatch(savePhotoSuccess(data.data.photos))
+    dispatch(actions.savePhotoSuccess(data.data.photos))
   }
 }
 
@@ -133,7 +96,11 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch,
   const userId = getState().auth.userId
   let data = await profileAPI.saveProfile(profile)
   if (data.resultCode === 0) {
-    dispatch(getUserProfile(userId!))
+    if (userId != null) {
+      dispatch(getUserProfile(userId))
+    } else {
+      throw new Error(`UserId can't be null`)
+    }
   } else {
     // dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0]}));
     let wrongNetwork = data.messages[0]
