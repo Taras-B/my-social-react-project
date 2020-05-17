@@ -1,10 +1,4 @@
-import { instance, ResultCodeEnum } from './api'
-
-type ResponseType<D = {}, RC = ResultCodeEnum> = {
-  data: D
-  resultCode: RC
-  messages: Array<string>
-}
+import { instance, APIResponseType, ResultCodeEnum } from './api'
 
 export type MeResponseDataType = {
   id: number
@@ -18,11 +12,11 @@ export type LoginResponseDataType = {
 
 export const authAPI = {
   getMe() {
-    return instance.get<ResponseType<MeResponseDataType>>(`auth/me`).then((res) => res.data)
+    return instance.get<APIResponseType<MeResponseDataType>>(`auth/me`).then((res) => res.data)
   },
   login(email: string, password: string, rememberMe = false, captcha: null | string = null) {
     return instance
-      .post<ResponseType<LoginResponseDataType>>(`auth/login`, {
+      .post<APIResponseType<LoginResponseDataType, ResultCodeEnum>>(`auth/login`, {
         email,
         password,
         rememberMe,

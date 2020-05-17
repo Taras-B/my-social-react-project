@@ -1,5 +1,5 @@
 import { profileAPI } from '../api/profileAPI'
-import { userAPI } from '../api/userAPI'
+// import { userAPI } from '../api/userAPI'
 import { stopSubmit } from 'redux-form'
 import { PostType, ProfileType, ProfilePhoto, MyCastomThunk } from '../types/types'
 
@@ -107,45 +107,45 @@ export const savePhotoSuccess = (photos: ProfilePhoto): SavePhotoActionType => {
 export type ThunkType = MyCastomThunk<ActionType>
 
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
-  let response = await userAPI.getProfile(userId)
-  dispatch(setUserProfile(response.data))
+  let data = await profileAPI.getProfile(userId)
+  dispatch(setUserProfile(data))
 }
 
 export const getStatus = (userId: number): ThunkType => async (dispatch) => {
-  let response = await profileAPI.getStatus(userId)
-  dispatch(setStatus(response.data))
+  let data = await profileAPI.getStatus(userId)
+  dispatch(setStatus(data))
 }
 export const updateStatus = (status: string): ThunkType => async (dispatch) => {
-  let response = await profileAPI.updateStatus(status)
-  if (response.data.resultCode === 0) {
+  let data = await profileAPI.updateStatus(status)
+  if (data.resultCode === 0) {
     dispatch(setStatus(status))
   }
 }
 
 export const savePhoto = (file: any): ThunkType => async (dispatch) => {
-  let response = await profileAPI.savePhoto(file)
-  if (response.data.resultCode === 0) {
-    dispatch(savePhotoSuccess(response.data.data.photos))
+  let data = await profileAPI.savePhoto(file)
+  if (data.resultCode === 0) {
+    dispatch(savePhotoSuccess(data.data.photos))
   }
 }
 
 export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
   const userId = getState().auth.userId
-  let response = await profileAPI.saveProfile(profile)
-  if (response.data.resultCode === 0) {
+  let data = await profileAPI.saveProfile(profile)
+  if (data.resultCode === 0) {
     dispatch(getUserProfile(userId!))
   } else {
     // dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0]}));
-    let wrongNetwork = response.data.messages[0]
-      .slice(response.data.messages[0].indexOf('>') + 1, response.data.messages[0].indexOf(')'))
+    let wrongNetwork = data.messages[0]
+      .slice(data.messages[0].indexOf('>') + 1, data.messages[0].indexOf(')'))
       .toLocaleLowerCase()
     dispatch(
       //@ts-ignore
       stopSubmit('edit-profile', {
-        contacts: { [wrongNetwork]: response.data.messages[0] },
+        contacts: { [wrongNetwork]: data.messages[0] },
       })
     )
-    return Promise.reject(response.data.messages[0])
+    return Promise.reject(data.messages[0])
   }
 }
 

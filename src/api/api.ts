@@ -6,6 +6,11 @@ export const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
   headers: { 'API-KEY': '7898467d-1e2f-4ef0-ba59-6a5a0c76a13b' },
 })
+export type APIResponseType<D = {}, RC = ResultCodeEnum> = {
+  data: D
+  resultCode: RC
+  messages: Array<string>
+}
 
 export type GetProfileType = {
   data: ProfileType
