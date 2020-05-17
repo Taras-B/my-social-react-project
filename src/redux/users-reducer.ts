@@ -100,7 +100,7 @@ export const actions = {
 
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionType>
 
-// Thunk....
+// Thunks....
 
 export const getUsers = (currentPage: number, pageSize: number): ThunkType => {
   return async (dispatch) => {
