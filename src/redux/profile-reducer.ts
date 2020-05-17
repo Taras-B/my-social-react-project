@@ -1,4 +1,5 @@
-import { userAPI, profileAPI } from '../api/api'
+import { profileAPI } from '../api/profileAPI'
+import { userAPI } from '../api/userAPI'
 import { stopSubmit } from 'redux-form'
 import { PostType, ProfileType, ProfilePhoto, MyCastomThunk } from '../types/types'
 
@@ -12,10 +13,10 @@ let initialState = {
   posts: [
     { id: 1, message: 'Hi, how are you?', likeCount: 10 },
     { id: 2, message: 'It is my first props', likeCount: 23 },
-    { id: 3, message: 'It the end?', likeCount: 70 }
+    { id: 3, message: 'It the end?', likeCount: 70 },
   ] as Array<PostType>,
   profile: null as ProfileType | null,
-  status: ''
+  status: '',
 }
 
 type InitialStateProfileType = typeof initialState
@@ -26,11 +27,11 @@ const profileReducer = (state = initialState, action: ActionType): InitialStateP
       let newPost = {
         id: Date.now(),
         message: action.newPostText,
-        likeCount: 2
+        likeCount: 2,
       }
       return {
         ...state,
-        posts: [...state.posts, newPost]
+        posts: [...state.posts, newPost],
       }
     }
     case DELETE_POST: {
@@ -141,7 +142,7 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch,
     dispatch(
       //@ts-ignore
       stopSubmit('edit-profile', {
-        contacts: { [wrongNetwork]: response.data.messages[0] }
+        contacts: { [wrongNetwork]: response.data.messages[0] },
       })
     )
     return Promise.reject(response.data.messages[0])

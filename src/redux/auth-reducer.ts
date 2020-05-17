@@ -1,5 +1,6 @@
 import { ResultCodeEnum } from './../api/api'
-import { authAPI, securityAPI } from '../api/api'
+import { securityAPI } from '../api/securityAPI'
+import { authAPI } from '../api/authAPI'
 import { stopSubmit } from 'redux-form'
 import { MyCastomThunk } from '../types/types'
 
@@ -11,7 +12,7 @@ let initialState = {
   email: null as string | null,
   login: null as string | null,
   isAuth: false,
-  captchaUrl: null as string | null
+  captchaUrl: null as string | null,
 }
 
 export type InitialStateType = typeof initialState
@@ -22,7 +23,7 @@ const authReducer = (state = initialState, action: ActionType): InitialStateType
     case GET_CAPTCHA_URL_SUCCESS:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       }
 
     default:
@@ -55,8 +56,8 @@ export const setAuthUserData = (
     userId,
     email,
     login,
-    isAuth
-  }
+    isAuth,
+  },
 })
 
 type GetCaptchaUrlSuccessActionType = {
@@ -66,7 +67,7 @@ type GetCaptchaUrlSuccessActionType = {
 
 export const getCaptchaUrlSuccess = (captchaUrl: string): GetCaptchaUrlSuccessActionType => ({
   type: GET_CAPTCHA_URL_SUCCESS,
-  payload: { captchaUrl }
+  payload: { captchaUrl },
 })
 
 export type ThunkCreator = MyCastomThunk<ActionType>
