@@ -2,7 +2,7 @@ import React from 'react'
 import s from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem'
 import Message from './Message/Message'
-import { Field, reduxForm, reset } from 'redux-form'
+import { Field, reduxForm, reset, InjectedFormProps } from 'redux-form'
 import { Textarea } from '../common/FormsControls/FormsControls'
 import { required, maxLengthCreator } from '../../utils/validators/validators'
 import { Grid, Box, Button } from '@material-ui/core'
@@ -16,16 +16,16 @@ type IDProps = {
   sendMessage: (newMessageBody: string) => void
 }
 
-const Dialogs: React.FC<IDProps> = props => {
+const Dialogs: React.FC<IDProps> = (props) => {
   let state = props.messagePage
 
-  let dialogsElements = state.dialogs.map(dialog => (
+  let dialogsElements = state.dialogs.map((dialog) => (
     <DialogItem name={dialog.name} key={dialog.id} id={dialog.id} />
   ))
 
-  let messageElements = state.messages.map(m => <Message message={m.message} key={m.id} />)
+  let messageElements = state.messages.map((m) => <Message message={m.message} key={m.id} />)
 
-  let AddNewMessage = (value: any) => {
+  let AddNewMessage = (value: { newMessageBody: string }) => {
     props.sendMessage(value.newMessageBody)
   }
 
@@ -41,8 +41,7 @@ const Dialogs: React.FC<IDProps> = props => {
         sm={9}
         justify="center"
         direction="column"
-        className={s.messageForm}
-      >
+        className={s.messageForm}>
         <Box>{messageElements}</Box>
         <Box>
           <AddMessageFormRedux onSubmit={AddNewMessage} />
@@ -53,8 +52,14 @@ const Dialogs: React.FC<IDProps> = props => {
 }
 
 const maxLength50 = maxLengthCreator(50)
+type NewMessageFormValuesType = {
+  newMessageBody: string
+}
+type PropsType = {}
 
-const AddMessageForm = (props: any) => {
+const AddMessageForm: React.FC<
+  InjectedFormProps<NewMessageFormValuesType, PropsType> & PropsType
+> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <Field
@@ -74,9 +79,9 @@ const AddMessageForm = (props: any) => {
   )
 }
 const afterSubmit = (result: any, dispatch: any) => dispatch(reset('dialogAddMessageForm'))
-const AddMessageFormRedux = reduxForm({
+const AddMessageFormRedux = reduxForm<NewMessageFormValuesType>({
   form: 'dialogAddMessageForm',
-  onSubmitSuccess: afterSubmit
+  onSubmitSuccess: afterSubmit,
 })(AddMessageForm)
 
 export default Dialogs

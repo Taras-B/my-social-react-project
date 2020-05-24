@@ -10,7 +10,7 @@ import {
   Button,
   CardActions,
   Typography,
-  Card
+  Card,
 } from '@material-ui/core'
 import { UserType } from '../../types/types'
 

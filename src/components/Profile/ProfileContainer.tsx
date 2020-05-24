@@ -7,7 +7,7 @@ import {
   getStatus,
   updateStatus,
   savePhoto,
-  saveProfile
+  saveProfile,
 } from '../../redux/profile-reducer'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { compose } from 'redux'
@@ -74,16 +74,16 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => ({
   profile: state.profilePage.profile!,
   status: state.profilePage.status,
   autorizedUserId: state.auth.userId,
-  isAuth: state.auth.isAuth
+  isAuth: state.auth.isAuth,
 })
 
-export default compose(
+export default compose<React.ComponentType>(
   connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
     getUserProfile,
     getStatus,
     updateStatus,
     savePhoto,
-    saveProfile
+    saveProfile,
   }),
   withRouter
 )(ProfileContainer)

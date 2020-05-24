@@ -1,13 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import s from './MyPosts.module.css'
 import Post from './Post/Post'
-import { reduxForm, Field, reset } from 'redux-form'
+import { reduxForm, Field, reset, InjectedFormProps } from 'redux-form'
 import { required, maxLengthCreator } from '../../../utils/validators/validators'
-import { Textarea } from '../../common/FormsControls/FormsControls'
+import { Textarea, createField, Input } from '../../common/FormsControls/FormsControls'
 import { Button, Typography } from '@material-ui/core'
+import { PostType, ProfilePhoto } from '../../../types/types'
 
-const MyPosts = React.memo((props) => {
-  let onAddPost = (value) => {
+type PropsT = {
+  posts: Array<PostType>
+  photo: ProfilePhoto
+  addPost: (newPostText: string) => void
+  deletePost: (id: number) => void
+}
+
+const MyPosts: React.FC<PropsT> = (props) => {
+  let onAddPost = (value: PostFormKeysT) => {
     props.addPost(value.newPostText)
   }
   // через мап  рисуєм пости
@@ -31,20 +40,37 @@ const MyPosts = React.memo((props) => {
       </div>
     </div>
   )
-})
+}
 
 const maxLenght10 = maxLengthCreator(10)
 
-const AddPostForm = (props) => {
+type PostFormKeysT = {
+  newPostText: string
+}
+
+type PostFormValuesTypeKeys = Extract<keyof PostFormKeysT, string>
+
+const AddPostForm: React.FC<InjectedFormProps<PostFormKeysT>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
-        <Field
+        {createField<PostFormValuesTypeKeys>(
+          'Email',
+          'newPostText',
+          [required, maxLenght10],
+          Input,
+          {
+            variant: 'outlined',
+            size: 'small',
+            color: 'secondary',
+          }
+        )}
+        {/* <Field
           name="newPostText"
           component={Textarea}
           placeholder="sign text"
           validate={[required, maxLenght10]}
-        />
+        /> */}
         <br />
         <Button color="secondary" type="submit">
           Add post
@@ -54,11 +80,11 @@ const AddPostForm = (props) => {
   )
 }
 
-const afterSubmit = (result, dispatch) => dispatch(reset('newPostText'))
+const afterSubmit = (result: any, dispatch: any) => dispatch(reset('newPostText'))
 
-const AddPostReduxForm = reduxForm({
+const AddPostReduxForm = reduxForm<PostFormKeysT, {}>({
   form: 'newPostText',
-  onSubmitSuccess: afterSubmit
+  onSubmitSuccess: afterSubmit,
 })(AddPostForm)
-
-export default MyPosts
+const MyPostsMemo = React.memo(MyPosts)
+export default MyPostsMemo

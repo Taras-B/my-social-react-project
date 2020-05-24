@@ -2,13 +2,7 @@ import React from 'react'
 import { Grid } from '@material-ui/core'
 // import { makeStyles } from '@material-ui/core/styles';
 
-import {
-  Route,
-  withRouter,
-  HashRouter,
-  Switch,
-  Redirect
-} from 'react-router-dom'
+import { Route, withRouter, HashRouter, Switch, Redirect } from 'react-router-dom'
 
 import 'typeface-roboto'
 import './App.css'
@@ -28,19 +22,23 @@ import { initializeApp } from './redux/app-reducer'
 import { connect } from 'react-redux'
 import { Provider } from 'react-redux'
 import { compose } from 'redux'
-import store from './redux/redux-store'
+import store, { AppStateType } from './redux/redux-store'
 
 import { withSuspense } from './components/hoc/withSuspense'
 
-const DialogsContainer = React.lazy(() =>
-  import('./components/Dialogs/DialogsContainer')
-)
-const ProfileContainer = React.lazy(() =>
-  import('./components/Profile/ProfileContainer')
-)
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
+const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'))
 
-class App extends React.Component {
-  catchAllUnhandledErrors = (reason, promise) => {
+type MapPropsT = ReturnType<typeof mapStateToProps>
+type DispatchPropsT = {
+  initializeApp: () => void
+}
+
+const SuspendedDialogs = withSuspense(DialogsContainer)
+const SuspendedProfile = withSuspense(ProfileContainer)
+
+class App extends React.Component<MapPropsT & DispatchPropsT> {
+  catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
     console.log('object')
   }
 
@@ -50,10 +48,7 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener(
-      'unhandledrejection',
-      this.catchAllUnhandledErrors
-    )
+    window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
   }
   render() {
     if (!this.props.initialized) return <Preloader /> // зробити загрузку по середині, + класів,css
@@ -69,11 +64,8 @@ class App extends React.Component {
           <div className="app-wrapper-content">
             <Switch>
               <Redirect exact from="/" to="/profile" />
-              <Route path="/dialogs" render={withSuspense(DialogsContainer)} />
-              <Route
-                path="/profile/:userId?"
-                render={withSuspense(ProfileContainer)}
-              />
+              <Route path="/dialogs" render={() => <SuspendedDialogs />} />
+              <Route path="/profile/:userId?" render={() => <SuspendedProfile />} />
               <Route path="/users" render={() => <UsersContainer />} />
               <Route path="/news" component={News} />
               <Route path="/music" component={Music} />
@@ -87,16 +79,16 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  initialized: state.app.initialized
+const mapStateToProps = (state: AppStateType) => ({
+  initialized: state.app.initialized,
 })
 
-let AppContainer = compose(
+let AppContainer = compose<React.ComponentType>(
   withRouter,
   connect(mapStateToProps, { initializeApp })
 )(App)
 
-const MainApp = props => {
+const MainApp: React.FC = () => {
   return (
     <HashRouter>
       <Provider store={store}>
